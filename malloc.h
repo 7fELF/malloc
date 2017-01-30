@@ -21,6 +21,5 @@ void free(void *ptr);
 void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);
 
-/* Commons functions, USE STATIC MOFTT */
 
 #endif /* !MALLOC_H_ */
