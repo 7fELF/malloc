@@ -8,32 +8,33 @@
 ## Last update Fri Jan 27 15:07:09 2017 Linus Torvalds
 ##
 
-CC		= gcc
+CC = gcc
 
-RM		= rm -rf
+RM = rm -rf
 
-NAME	= my_malloc
+TARGET_LIB = libmy_malloc.so
 
-FLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -fPIC
+LDFLAGS = -shared
 
-SRC		= 	common.c \
-			free.c \
+SRC	= free.c \
 			malloc.c \
 			realloc.c \
-			show_alloc.c
+			show_alloc.c \
 
-OBJ		= $(SRC:.c=.o)
 
-all: $(NAME)
+OBJS = $(SRC:.c=.o)
 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $(NAME) $(FLAGS)
+all: $(TARGET_LIB)
+
+$(TARGET_LIB): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) -o $(TARGET_LIB)
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(TARGET_LIB)
 
 re: clean fclean all
 
