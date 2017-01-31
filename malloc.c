@@ -12,6 +12,8 @@
 #include <string.h>
 #include <stdio.h>
 
+t_chunk *g_first_chunk = NULL;
+
 t_chunk     *find_block(t_chunk *first_block, size_t size) {
   t_chunk   *tmp;
 
@@ -24,5 +26,6 @@ t_chunk     *find_block(t_chunk *first_block, size_t size) {
 }
 
 void *malloc(size_t size) {
+
 }
 

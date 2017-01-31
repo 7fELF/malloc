@@ -35,6 +35,7 @@ void *realloc(void *ptr, size_t size);
 #define ROUND_HEAP_SIZE(size) (size | (MIN_BLOCK_SIZE - 1)) + 1
 #define ROUND_CHUNK_SIZE(size) ((size | 7) + 1)
 
+
 typedef struct s_chunk t_chunk;
 
 struct s_chunk {
@@ -43,5 +44,7 @@ struct s_chunk {
   t_chunk *prev;
   t_chunk *next;
 };
+
+extern t_chunk *g_first_chunk;
 
 #endif /* !MALLOC_H_ */
