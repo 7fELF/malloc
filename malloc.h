@@ -35,21 +35,13 @@ void *realloc(void *ptr, size_t size);
 #define ROUND_HEAP_SIZE(size) (size | (MIN_BLOCK_SIZE - 1)) + 1
 #define ROUND_CHUNK_SIZE(size) ((size | 7) + 1)
 
-typedef struct s_memory_chunk {
-  void *ptr;
+typedef struct s_chunk t_chunk;
+
+struct s_chunk {
   size_t size;
   long free;
-} t_memory_chunk;
-
-/*
- * Daufault size of the t_memory->chunks array
- */
-#define DEFAULT_CHUNK_ARRAY_SIZE 8
-
-typedef struct s_memory {
-  t_memory_chunk *chunks;
-  size_t len;
-  size_t size;
-} t_memory;
+  t_chunk *prev;
+  t_chunk *next;
+};
 
 #endif /* !MALLOC_H_ */
