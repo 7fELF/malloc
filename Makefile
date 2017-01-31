@@ -17,6 +17,10 @@ TARGET_LIB = libmy_malloc.so
 CFLAGS	= -Wall -Wextra -Werror -fPIC
 LDFLAGS = -shared
 
+
+CC = clang
+CFLAGS = -Weverything -fPIC
+
 SRC	= free.c \
 			malloc.c \
 			realloc.c \
