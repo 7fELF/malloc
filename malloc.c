@@ -25,8 +25,8 @@ t_chunk     *get_free_block(size_t size) {
   return (tmp);
 }
 
-t_chunk   *get_last_block(void) {
-  t_chunk *tmp;
+t_chunk     *get_last_block(void) {
+  t_chunk   *tmp;
 
   tmp = g_first_chunk;
   while (tmp->next)
@@ -35,8 +35,8 @@ t_chunk   *get_last_block(void) {
   return (tmp);
 }
 
-t_chunk *extend_local_heap(size_t size) {
-  t_chunk *tmp;
+t_chunk     *extend_local_heap(size_t size) {
+  t_chunk   *tmp;
 
   tmp = sbrk(0);
   if (sbrk(ROUND_HEAP_SIZE(size)) == (void*)-1)
