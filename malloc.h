@@ -37,11 +37,12 @@ void *realloc(void *ptr, size_t size);
 
 typedef struct s_chunk t_chunk;
 
-struct s_chunk {
-  size_t size;
-  long free;
+struct    s_chunk {
+  size_t  size;
+  long    free;
   t_chunk *prev;
   t_chunk *next;
+  size_t  end;
 };
 
 extern t_chunk *g_first_chunk;
@@ -50,5 +51,6 @@ extern t_chunk *g_first_chunk;
 t_chunk     *get_free_block(size_t size);
 t_chunk     *get_last_block(void);
 t_chunk     *extend_local_heap(size_t size);
+void        split_given_block(t_chunk *g, size_t size);
 
 #endif /* !MALLOC_H_ */

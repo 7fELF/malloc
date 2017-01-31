@@ -52,6 +52,18 @@ t_chunk     *extend_local_heap(size_t size) {
   return (tmp);
 }
 
+void        split_given_block(t_chunk *g, size_t size) {
+  t_chunk *tmp;
+
+  tmp = g->end + size;
+  tmp->size = g->size - size - ROUND_HEAP_SIZE(size);
+  tmp->next = g->next;
+  tmp->free = 1;
+  tmp->prev = g;
+  g->size = size;
+  g->next = tmp;
+}
+
 void *malloc(size_t size) {
 
 }
