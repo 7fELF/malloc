@@ -12,6 +12,16 @@
 #include <string.h>
 #include <stdio.h>
 
+t_chunk     *find_block(t_chunk *first_block, size_t size) {
+  t_chunk   *tmp;
+
+  tmp = first_block;
+  while (tmp && (tmp->free && tmp->size >= size)) {
+    tmp = tmp->next;
+  }
+
+  return (tmp);
+}
 
 void *malloc(size_t size) {
 }
