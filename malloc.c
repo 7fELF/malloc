@@ -14,15 +14,23 @@
 
 t_chunk *g_first_chunk = NULL;
 
-t_chunk     *find_block(t_chunk *first_block, size_t size) {
+t_chunk     *find_free_block(size_t size) {
   t_chunk   *tmp;
 
-  tmp = first_block;
+  tmp = g_first_chunk;
   while (tmp && (tmp->free && tmp->size >= size)) {
     tmp = tmp->next;
   }
 
   return (tmp);
+}
+
+t_chunk *extend_local_heap(size_t size) {
+  t_chunk *tmp;
+
+  tmp = sbrk(0);
+  if (sbrk(ROUND_HEAP_SIZE(size)) == (void*)-1)
+    return (NULL);
 }
 
 void *malloc(size_t size) {
