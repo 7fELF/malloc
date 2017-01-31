@@ -52,5 +52,6 @@ t_chunk     *get_free_block(size_t size);
 t_chunk     *get_last_block(void);
 t_chunk     *extend_local_heap(size_t size);
 void        split_given_block(t_chunk *g, size_t size);
+t_chunk     *glue_given_block(t_chunk *g);
 
 #endif /* !MALLOC_H_ */

@@ -64,6 +64,18 @@ void        split_given_block(t_chunk *g, size_t size) {
   g->next = tmp;
 }
 
+t_chunk     *glue_given_block(t_chunk *g) {
+  if (g->next && g->next->free) {
+    g->size += ROUND_HEAP_SIZE(g->size) + g->next->size;
+    g->next = g->next->next;
+    if (g->next) {
+      g->next->prev = g;
+    }
+  }
+
+  return (g);
+}
+
 void *malloc(size_t size) {
   (void)size;
 }
