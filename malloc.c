@@ -12,8 +12,6 @@
 #include <string.h>
 #include <stdio.h>
 
-
-
 static void add_chunk(t_memory *memory, void *ptr, size_t size, long free) {
   t_memory_chunk *chunk;
 
