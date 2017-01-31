@@ -52,7 +52,4 @@ typedef struct s_memory {
   size_t size;
 } t_memory;
 
-t_memory *get_memory(void);
-void show_alloc_mem(void);
-
 #endif /* !MALLOC_H_ */
