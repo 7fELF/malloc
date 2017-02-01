@@ -56,7 +56,6 @@ static t_chunk *alloc_chunk(t_chunk *chunk, size_t size) {
 
 void        *malloc(size_t size)
 {
-  /* write(2, "malloc-", 7); */
   size_t  size_to_add;
   t_chunk   *chunk;
   t_chunk   *last_chunk;
@@ -84,20 +83,6 @@ void        *malloc(size_t size)
   if (g_first_chunk == NULL)
     g_first_chunk = chunk;
 
-  /* write(2, "okn\n", 4); */
   return (chunk + 1);
 }
-
-
-/* static t_chunk     *glue_given_block(t_chunk *g) { */
-/*   if (g->next && g->next->free) { */
-/*     g->size += ROUND_HEAP_SIZE(g->size) + g->next->size; */
-/*     g->next = g->next->next; */
-/*     if (g->next) { */
-/*       g->next->prev = g; */
-/*     } */
-/*   } */
-
-/*   return (g); */
-/* } */
 
