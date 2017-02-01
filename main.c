@@ -10,7 +10,17 @@
 
 #include "malloc.h"
 
-int main() {
-  int *a = (int*) malloc(sizeof(int));
+int main()
+{
+  int *a;
+
+  a = (int*) malloc(sizeof(int));
+  *a = 5;
+  a = (int*) malloc(sizeof(int)*3);
+  *a = 5;
+  a = (int*) malloc(sizeof(int)*3);
+  *a = 5;
+  a = (int*) malloc(sizeof(int)*3);
+  *a = 5;
   show_alloc_mem();
 }
