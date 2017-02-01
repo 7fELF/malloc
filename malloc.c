@@ -1,5 +1,5 @@
 /*
-** malloc.c for PSU_2016_malloc in /Users/pichar_v/Documents/tek2/PSU_2016_malloc
+** malloc.c for PSU_2016_malloc in /tekpi/PSU_2016_malloc
 **
 ** Made by Valentin Pichard
 ** Login   <valentin.pichard@epitech.eu>
@@ -11,22 +11,32 @@
 #include "malloc.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 
 t_chunk *g_first_chunk = NULL;
 
-t_chunk     *get_free_block(size_t size) {
-  t_chunk   *tmp;
+static void *set_chunk(void *ptr, size_t size, long free, t_chunk *prev)
+{
+  t_chunk *chunk;
 
-  tmp = g_first_chunk;
-  while (tmp && (tmp->free && 
-  ROUND_HEAP_SIZE(tmp->size) >= ROUND_HEAP_SIZE(size))) {
-    tmp = tmp->next;
+  chunk = (t_chunk*) ptr;
+  chunk->size = size;
+  chunk->free = free;
+  chunk->next = prev ? prev->next : NULL;
+  if (prev)
+  {
+    chunk->next = prev->next;
+    prev->next = chunk;
   }
-
-  return (tmp);
+  else
+  {
+    chunk->next = NULL;
+  }
+  chunk->prev = prev;
+  return ((char*) ptr) + sizeof(t_chunk) + size;
 }
 
-t_chunk     *get_last_block(void) {
+static t_chunk     *get_last_block(void) {
   t_chunk   *tmp;
 
   tmp = g_first_chunk;
@@ -36,36 +46,56 @@ t_chunk     *get_last_block(void) {
   return (tmp);
 }
 
-t_chunk     *extend_local_heap(size_t size) {
-  t_chunk   *tmp;
+void        *malloc(size_t size)
+{
+  write(2, "malloc-", 7);
+  size_t  size_to_add;
+  t_chunk   *chunk;
+  t_chunk   *last_chunk;
 
-  tmp = sbrk(0);
-  if (sbrk(ROUND_HEAP_SIZE(size)) == (void*)-1)
-    return (NULL);
-  tmp->size = size;
-  tmp->next = NULL;
-  tmp->prev = get_last_block();
-  if (get_last_block()) {
-    get_last_block()->next = tmp;
+  size = ROUND_CHUNK_SIZE(size);
+  chunk = g_first_chunk;
+  last_chunk = NULL;
+  while (chunk)
+  {
+    if (chunk->free && chunk->size >= size)
+    {
+      if (chunk->size <= (size + sizeof(t_chunk) + 8))
+      {
+        size = chunk->size;
+      }
+      else
+      {
+        //split
+      }
+      chunk->free = 0;
+      return (chunk + 1);
+    }
+    last_chunk = chunk;
+    chunk = chunk->next;
   }
-  tmp->free = 0;
+  size_to_add = ROUND_HEAP_SIZE(size + sizeof(t_chunk) * 2 + 8);
+  chunk = (t_chunk*) sbrk((intptr_t)size_to_add);
+  if (chunk == (void*) -1)
+    return NULL;
+  last_chunk = (t_chunk*) set_chunk(chunk, size, 0, last_chunk);
+  set_chunk(last_chunk, size_to_add - size - (sizeof(t_chunk) * 2), 1, chunk);
 
-  return (tmp);
+  if (g_first_chunk == NULL)
+    g_first_chunk = chunk;
+
+  write(2, "ok\n", 3);
+  return (chunk + 1);
 }
 
-void        split_given_block(t_chunk *g, size_t size) {
-  t_chunk *tmp;
-
-  tmp = (t_chunk *)(g->end + size);
-  tmp->size = g->size - size - ROUND_HEAP_SIZE(size);
-  tmp->next = g->next;
-  tmp->free = 1;
-  tmp->prev = g;
-  g->size = size;
-  g->next = tmp;
+static void        split_block(t_chunk *chunk, size_t size) {
+  /*
+   * To recode using set_chunk
+   * if the chunk is too small to make two parts, keep the chunk intact
+   */
 }
 
-t_chunk     *glue_given_block(t_chunk *g) {
+static t_chunk     *glue_given_block(t_chunk *g) {
   if (g->next && g->next->free) {
     g->size += ROUND_HEAP_SIZE(g->size) + g->next->size;
     g->next = g->next->next;
@@ -75,9 +105,5 @@ t_chunk     *glue_given_block(t_chunk *g) {
   }
 
   return (g);
-}
-
-void *malloc(size_t size) {
-  (void)size;
 }
 
