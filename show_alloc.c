@@ -13,4 +13,13 @@
 
 void show_alloc_mem()
 {
+  printf("\n----------------\n");
+  t_chunk *chunk;
+
+  chunk = g_first_chunk;
+  while (chunk) {
+    printf("%p %6lu %2lu \n", chunk + 1, chunk->size, chunk->free);
+    chunk = chunk->next;
+  }
+  printf("----------------\n");
 }
