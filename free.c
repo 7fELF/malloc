@@ -10,6 +10,8 @@
 
 #include "malloc.h"
 
-void free(void *ptr) {
-    (void)ptr;
+void free(void *ptr)
+{
+  write(2, "free\n", 5);
+  (void)ptr;
 }

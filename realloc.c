@@ -1,5 +1,5 @@
 /*
-** realloc.c for PSU_2016_malloc in /Users/pichar_v/Documents/tek2/PSU_2016_malloc
+** realloc.c for PSU_2016_malloc in /tekpi/PSU_2016_malloc
 **
 ** Made by Valentin Pichard
 ** Login   <valentin.pichard@epitech.eu>
@@ -10,8 +10,10 @@
 
 #include "malloc.h"
 
-void *realloc(void *ptr, size_t size) {
+void *realloc(void *ptr, size_t size)
+{
+  write(2, "realloc\n", 8);
   (void) size;
   (void) ptr;
-  return NULL;
+  return (NULL);
 }

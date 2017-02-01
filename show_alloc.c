@@ -11,5 +11,6 @@
 #include "malloc.h"
 #include <stdio.h>
 
-void show_alloc_mem() {
+void show_alloc_mem()
+{
 }
