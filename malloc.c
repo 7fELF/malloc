@@ -43,10 +43,8 @@ static t_chunk *alloc_chunk(t_chunk *chunk, size_t size) {
     chunk->free = 0;
     return chunk;
   }
-
   next = chunk->next;
   leftover_size = chunk->size - size - (METADATA_SIZE * 2);
-
   leftover = (t_chunk*) set_chunk(chunk, size, 0, chunk->prev);
   chunk->next = leftover;
   set_chunk(leftover, leftover_size, 1, chunk->prev);
@@ -56,6 +54,7 @@ static t_chunk *alloc_chunk(t_chunk *chunk, size_t size) {
 
 void        *malloc(size_t size)
 {
+  /* write(2, "malloc\n", 7); */
   size_t  size_to_add;
   t_chunk   *chunk;
   t_chunk   *last_chunk;
@@ -63,13 +62,10 @@ void        *malloc(size_t size)
   size = ROUND_CHUNK_SIZE(size);
   chunk = g_first_chunk;
   last_chunk = NULL;
-
   while (chunk)
   {
     if (chunk->free && chunk->size >= size)
-    {
       return (alloc_chunk(chunk, size) + 1);
-    }
     last_chunk = chunk;
     chunk = chunk->next;
   }
@@ -79,7 +75,6 @@ void        *malloc(size_t size)
     return NULL;
   last_chunk = (t_chunk*) set_chunk(chunk, size, 0, last_chunk);
   set_chunk(last_chunk, size_to_add - size - (METADATA_SIZE * 2), 1, chunk);
-
   if (g_first_chunk == NULL)
     g_first_chunk = chunk;
 

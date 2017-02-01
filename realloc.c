@@ -26,6 +26,9 @@ void *realloc(void *ptr, size_t size)
   if (ptr == NULL)
     return new;
   chunk = (t_chunk*)ptr - 1;
+  if (size < chunk->size) {
+    return ptr;
+  }
   memcpy(new, ptr, chunk->size);
   free(ptr);
   return (new);

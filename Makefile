@@ -19,7 +19,7 @@ LDFLAGS = -shared
 
 
 CC = clang
-CFLAGS = -Weverything -fPIC
+CFLAGS = -Weverything -fPIC -g
 
 SRC	= free.c \
 			malloc.c \
