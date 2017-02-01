@@ -15,6 +15,10 @@
 
 t_chunk *g_first_chunk = NULL;
 
+/*
+** Set all the meta of the chunk
+** next is always set to NULL
+*/
 static void *set_chunk(void *ptr, size_t size, long free, t_chunk *prev)
 {
   t_chunk *chunk;
@@ -22,28 +26,39 @@ static void *set_chunk(void *ptr, size_t size, long free, t_chunk *prev)
   chunk = (t_chunk*) ptr;
   chunk->size = size;
   chunk->free = free;
-  chunk->next = prev ? prev->next : NULL;
-  if (prev)
-  {
-    chunk->next = prev->next;
-    prev->next = chunk;
-  }
-  else
-  {
-    chunk->next = NULL;
-  }
+  chunk->next = NULL;
   chunk->prev = prev;
+  if (prev)
+    prev->next = chunk;
   return ((char*) ptr) + sizeof(t_chunk) + size;
 }
 
-static t_chunk     *get_last_block(void) {
-  t_chunk   *tmp;
+/* static t_chunk     *get_last_block(void) { */
+/*   t_chunk   *tmp; */
 
-  tmp = g_first_chunk;
-  while (tmp->next)
-    tmp = tmp->next;
+/*   tmp = g_first_chunk; */
+/*   while (tmp->next) */
+/*     tmp = tmp->next; */
 
-  return (tmp);
+/*   return (tmp); */
+/* } */
+
+static t_chunk *alloc_chunk(t_chunk *chunk, size_t size) {
+  t_chunk *next;
+  t_chunk *leftover;
+  size_t leftover_size;
+
+  if (chunk->size <= (size + METADATA_SIZE * 2 + 8))
+    return chunk;
+
+  next = chunk->next;
+  leftover_size = chunk->size - size - (METADATA_SIZE * 2);
+
+  leftover = (t_chunk*) set_chunk(chunk, size, 0, chunk->prev);
+  chunk->next = leftover;
+  set_chunk(leftover, leftover_size, 1, chunk->prev);
+  leftover->next = next;
+  return chunk;
 }
 
 void        *malloc(size_t size)
@@ -60,16 +75,8 @@ void        *malloc(size_t size)
   {
     if (chunk->free && chunk->size >= size)
     {
-      if (chunk->size <= (size + METADATA_SIZE + 8))
-      {
-        size = chunk->size;
-      }
-      else
-      {
-        //split
-      }
-      chunk->free = 0;
-      return (chunk + 1);
+      write(2, "oka\n", 4);
+      return (alloc_chunk(chunk, size) + 1);
     }
     last_chunk = chunk;
     chunk = chunk->next;
@@ -84,26 +91,20 @@ void        *malloc(size_t size)
   if (g_first_chunk == NULL)
     g_first_chunk = chunk;
 
-  write(2, "ok\n", 3);
+  write(2, "okn\n", 4);
   return (chunk + 1);
 }
 
-static void        split_block(t_chunk *chunk, size_t size) {
-  /*
-   * To recode using set_chunk
-   * if the chunk is too small to make two parts, keep the chunk intact
-   */
-}
 
-static t_chunk     *glue_given_block(t_chunk *g) {
-  if (g->next && g->next->free) {
-    g->size += ROUND_HEAP_SIZE(g->size) + g->next->size;
-    g->next = g->next->next;
-    if (g->next) {
-      g->next->prev = g;
-    }
-  }
+/* static t_chunk     *glue_given_block(t_chunk *g) { */
+/*   if (g->next && g->next->free) { */
+/*     g->size += ROUND_HEAP_SIZE(g->size) + g->next->size; */
+/*     g->next = g->next->next; */
+/*     if (g->next) { */
+/*       g->next->prev = g; */
+/*     } */
+/*   } */
 
-  return (g);
-}
+/*   return (g); */
+/* } */
 
