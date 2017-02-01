@@ -16,11 +16,11 @@ int main()
 
   a = (int*) malloc(sizeof(int));
   *a = 5;
-  a = (int*) malloc(sizeof(int)*3);
+  a = (int*) malloc(sizeof(int));
   *a = 5;
-  a = (int*) malloc(sizeof(int)*3);
+  a = (int*) malloc(sizeof(int));
   *a = 5;
-  a = (int*) malloc(sizeof(int)*3);
+  a = (int*) malloc(sizeof(int));
   *a = 5;
   show_alloc_mem();
 }
