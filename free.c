@@ -10,8 +10,48 @@
 
 #include "malloc.h"
 
-void free(void *ptr)
+static t_chunk *addr_is_valid(void *ptr) {
+  t_chunk      *tmp;
+
+  tmp = ptr;
+  if (g_first_chunk) {
+    if (tmp > g_first_chunk && ptr < sbrk(0)) {
+      return ptr;
+    }
+  }
+
+  return (NULL);
+}
+
+static void    glue_given_block(t_chunk *g) {
+  if (g->prev && g->prev->free) {
+    g->prev->size += METADATA_SIZE + g->size;
+    g->prev->next = g->prev;
+    g = g->prev;
+  }
+  if (g->next && g->next->free) {
+    g->size += METADATA_SIZE + g->next->size;
+    g->next = g->next->next;
+    if (g->next) {
+      g->next->prev = g;
+    }
+  } else {
+    if (g->prev) {
+      g->prev->next = NULL;
+    } else
+        g_first_chunk = NULL;
+    brk(0);
+  }
+}
+
+void        free(void *ptr)
 {
-  write(2, "free\n", 5);
-  (void)ptr;
+  t_chunk   *tmp;
+
+  if (addr_is_valid(ptr) && ptr) {
+    tmp = addr_is_valid((t_chunk *)ptr);
+    tmp -= 1;
+    tmp->free = 1;
+    glue_given_block(tmp);
+  }
 }
