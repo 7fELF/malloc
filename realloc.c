@@ -9,11 +9,24 @@
 */
 
 #include "malloc.h"
+#include <string.h>
 
+#include <stdio.h>
+
+/*
+ * change that
+ */
 void *realloc(void *ptr, size_t size)
 {
-  write(2, "realloc\n", 8);
-  (void) size;
-  (void) ptr;
-  return (NULL);
+  t_chunk *chunk;
+
+  void *new = malloc(size);
+  if(new == NULL)
+    return NULL;
+  if (ptr == NULL)
+    return new;
+  chunk = (t_chunk*)ptr - 1;
+  memcpy(new, ptr, chunk->size);
+  free(ptr);
+  return (new);
 }
