@@ -48,6 +48,8 @@ struct     s_chunk {
   t_chunk  *next;
 };
 
+# define METADATA_SIZE (sizeof(t_chunk))
+
 extern t_chunk *g_first_chunk;
 
 #endif /* !MALLOC_H_ */

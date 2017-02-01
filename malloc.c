@@ -60,7 +60,7 @@ void        *malloc(size_t size)
   {
     if (chunk->free && chunk->size >= size)
     {
-      if (chunk->size <= (size + sizeof(t_chunk) + 8))
+      if (chunk->size <= (size + METADATA_SIZE + 8))
       {
         size = chunk->size;
       }
@@ -74,12 +74,12 @@ void        *malloc(size_t size)
     last_chunk = chunk;
     chunk = chunk->next;
   }
-  size_to_add = ROUND_HEAP_SIZE(size + sizeof(t_chunk) * 2 + 8);
+  size_to_add = ROUND_HEAP_SIZE(size + METADATA_SIZE * 2 + 8);
   chunk = (t_chunk*) sbrk((intptr_t)size_to_add);
   if (chunk == (void*) -1)
     return NULL;
   last_chunk = (t_chunk*) set_chunk(chunk, size, 0, last_chunk);
-  set_chunk(last_chunk, size_to_add - size - (sizeof(t_chunk) * 2), 1, chunk);
+  set_chunk(last_chunk, size_to_add - size - (METADATA_SIZE * 2), 1, chunk);
 
   if (g_first_chunk == NULL)
     g_first_chunk = chunk;
