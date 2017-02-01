@@ -18,7 +18,8 @@ t_chunk     *get_free_block(size_t size) {
   t_chunk   *tmp;
 
   tmp = g_first_chunk;
-  while (tmp && (tmp->free && tmp->size >= size)) {
+  while (tmp && (tmp->free && 
+  ROUND_HEAP_SIZE(tmp->size) >= ROUND_HEAP_SIZE(size))) {
     tmp = tmp->next;
   }
 
