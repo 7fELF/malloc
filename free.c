@@ -35,6 +35,9 @@ static void glue_given_block(t_chunk *g) {
     g->next = g->next->next;
     if (g->next) {
       g->next->prev = g;
+    } else {
+      g->prev->next = NULL;
+      brk(g);
     }
   }
 }
