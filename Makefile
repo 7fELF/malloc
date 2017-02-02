@@ -14,12 +14,12 @@ RM = rm -rf
 
 TARGET_LIB = libmy_malloc.so
 
-CFLAGS	= -Wall -Wextra -Werror -fPIC
+CFLAGS	= -Wall -Wextra -Werror -fPIC -O3
 LDFLAGS = -shared
 
 
-CC = clang
-CFLAGS = -Weverything -fPIC -g
+# CC = clang
+# CFLAGS = -Weverything -fPIC -g
 
 SRC	= free.c \
 			malloc.c \

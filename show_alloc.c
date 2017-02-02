@@ -10,18 +10,17 @@
 
 #include "malloc.h"
 #include <stdio.h>
+#include <inttypes.h>
 
 void show_alloc_mem()
 {
-  //write(1, sbrk(0), 10);
-  printf("\n----------------\n");
-  printf("break : 0x%lX\n", (unsigned long)sbrk(0));
   t_chunk *chunk;
 
+  printf("break : 0x%" PRIXPTR "\n", (uintptr_t) sbrk(0));
   chunk = g_first_chunk;
   while (chunk) {
-    printf("0x%lX - 0x%lX %lu bytes \n", (unsigned long)chunk, (unsigned long)(chunk + chunk->size), chunk->size);
+    printf("0x%" PRIXPTR " - 0x%" PRIXPTR " : %lu bytes \n",
+        (uintptr_t) chunk, (uintptr_t) (chunk + chunk->size), chunk->size);
     chunk = chunk->next;
   }
-  printf("----------------\n");
 }
