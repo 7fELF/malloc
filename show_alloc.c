@@ -14,6 +14,7 @@
 void show_alloc_mem()
 {
   printf("\n----------------\n");
+  printf("%p", sbrk(0));
   t_chunk *chunk;
 
   chunk = g_first_chunk;
