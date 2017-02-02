@@ -29,11 +29,11 @@ static void merge_free_blocks(t_chunk *g) {
       g->next->prev = g;
     }
   }
-  if (g->next == NULL){
-    if (g->prev)
-      g->prev->next = NULL;
-    brk(g);
-  }
+  /* if (g->next == NULL){ */
+  /*   if (g->prev) */
+  /*     g->prev->next = NULL; */
+  /*   brk(g); */
+  /* } */
 }
 
 
