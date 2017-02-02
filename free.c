@@ -10,20 +10,12 @@
 
 #include "malloc.h"
 
-static int addr_is_valid(void *ptr) {
-  t_chunk      *tmp;
-
-  tmp = ptr;
-  if (g_first_chunk && tmp) {
-    if (tmp > g_first_chunk && ptr < sbrk(0)) {
-      return 1;
-    }
-  }
-
-  return 0;
+static int addr_is_valid(t_chunk *chunk) {
+  return (g_first_chunk && chunk
+      && chunk > g_first_chunk && (void*) chunk < sbrk(0));
 }
 
-static void glue_given_block(t_chunk *g) {
+static void merge_free_blocks(t_chunk *g) {
   if (g->prev && g->prev->free) {
     g->prev->size += g->size + METADATA_SIZE;
     g->prev->next = g->next;
@@ -35,21 +27,35 @@ static void glue_given_block(t_chunk *g) {
     g->next = g->next->next;
     if (g->next) {
       g->next->prev = g;
-    } else {
-      g->prev->next = NULL;
-      brk(g);
     }
   }
+  /* if (g->next == NULL){ */
+  /*   g->prev->next = NULL; */
+  /*   brk(g); */
+  /* } */
 }
 
+
+#include <stdio.h>
 void        free(void *ptr)
 {
   t_chunk   *tmp;
 
-  if (addr_is_valid((t_chunk *)ptr)) {
-    tmp = (t_chunk *)ptr;
-    tmp->free = 1;
-    tmp = tmp-1;
-    glue_given_block(tmp);
+  tmp = (t_chunk *) ptr;
+  if (addr_is_valid(tmp)) {
+    t_chunk *chunk = g_first_chunk;
+    t_chunk *to_find = tmp - 1;
+    while (chunk)
+    {
+      if (chunk == to_find)
+      {
+        tmp = tmp - 1;
+        tmp->free = 1;
+        merge_free_blocks(tmp);
+        return;
+      }
+      chunk = chunk->next;
+    }
+    fprintf(stderr, "bad free: %p\n", ptr);
   }
 }
