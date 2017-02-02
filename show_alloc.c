@@ -13,13 +13,14 @@
 
 void show_alloc_mem()
 {
+  //write(1, sbrk(0), 10);
   printf("\n----------------\n");
-  printf("%p", sbrk(0));
+  printf("break : 0x%lX\n", (unsigned long)sbrk(0));
   t_chunk *chunk;
 
   chunk = g_first_chunk;
   while (chunk) {
-    printf("%p %6lu %2lu \n", (void*)(chunk + 1), chunk->size, chunk->free);
+    printf("0x%lX - 0x%lX %lu bytes \n", (unsigned long)chunk, (unsigned long)(chunk + chunk->size), chunk->size);
     chunk = chunk->next;
   }
   printf("----------------\n");
