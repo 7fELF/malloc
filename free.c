@@ -10,17 +10,17 @@
 
 #include "malloc.h"
 
-static t_chunk *addr_is_valid(void *ptr) {
+static int addr_is_valid(void *ptr) {
   t_chunk      *tmp;
 
   tmp = ptr;
-  if (g_first_chunk) {
+  if (g_first_chunk && tmp) {
     if (tmp > g_first_chunk && ptr < sbrk(0)) {
-      return ptr;
+      return 1;
     }
   }
 
-  return (NULL);
+  return 0;
 }
 
 static void glue_given_block(t_chunk *g) {
@@ -46,8 +46,8 @@ void        free(void *ptr)
 {
   t_chunk   *tmp;
 
-  tmp = addr_is_valid((t_chunk *)ptr);
-  if (tmp) {
+  if (addr_is_valid((t_chunk *)ptr)) {
+    tmp = (t_chunk *)ptr;
     tmp->free = 1;
     tmp = tmp-1;
     glue_given_block(tmp);
