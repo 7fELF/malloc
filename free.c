@@ -29,10 +29,11 @@ static void merge_free_blocks(t_chunk *g) {
       g->next->prev = g;
     }
   }
-  /* if (g->next == NULL){ */
-  /*   g->prev->next = NULL; */
-  /*   brk(g); */
-  /* } */
+  if (g->next == NULL){
+    if (g->prev)
+      g->prev->next = NULL;
+    brk(g);
+  }
 }
 
 
@@ -56,6 +57,6 @@ void        free(void *ptr)
       }
       chunk = chunk->next;
     }
-    fprintf(stderr, "bad free: %p\n", ptr);
+    /* fprintf(stderr, "bad free: %p\n", ptr); */
   }
 }
