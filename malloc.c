@@ -60,9 +60,27 @@ static t_chunk     *alloc_chunk(t_chunk *chunk, size_t size) {
   return (chunk);
 }
 
+static t_chunk *alloc_new_chunk(size_t size, t_chunk *last_chunk) {
+  size_t           size_to_add;
+  t_chunk          *chunk;
+
+  size_to_add = ROUND_HEAP_SIZE(size + METADATA_SIZE * 2 + 8);
+  chunk = (t_chunk*) sbrk((intptr_t)size_to_add);
+  if (chunk == (void*) -1)
+    return (NULL);
+
+  last_chunk = (t_chunk*) set_chunk(chunk, ((t_chunk){ size, 0, last_chunk, NULL }));
+  set_chunk(last_chunk,
+      ((t_chunk) { size_to_add - size - (METADATA_SIZE * 2), 1, chunk, NULL}));
+
+  if (g_first_chunk == NULL)
+    g_first_chunk = chunk;
+  return (chunk);
+
+}
+
 void               *malloc(size_t size)
 {
-  size_t           size_to_add;
   t_chunk          *chunk;
   t_chunk          *last_chunk;
 
@@ -76,17 +94,6 @@ void               *malloc(size_t size)
     last_chunk = chunk;
     chunk = chunk->next;
   }
-  size_to_add = ROUND_HEAP_SIZE(size + METADATA_SIZE * 2 + 8);
-  chunk = (t_chunk*) sbrk((intptr_t)size_to_add);
-  if (chunk == (void*) -1)
-    return (NULL);
-
-  last_chunk = (t_chunk*) set_chunk(chunk, ((t_chunk){ size, 0, last_chunk, NULL }));
-  set_chunk(last_chunk,
-      ((t_chunk) { size_to_add - size - (METADATA_SIZE * 2), 1, chunk, NULL}));
-
-  if (g_first_chunk == NULL)
-    g_first_chunk = chunk;
-  return (chunk + 1);
+  return (alloc_new_chunk(size, last_chunk) + 1);
 }
 
