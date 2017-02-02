@@ -23,24 +23,18 @@ static t_chunk *addr_is_valid(void *ptr) {
   return (NULL);
 }
 
-static void    glue_given_block(t_chunk *g) {
+static void glue_given_block(t_chunk *g) {
   if (g->prev && g->prev->free) {
-    g->prev->size += METADATA_SIZE + g->size;
-    g->prev->next = g->prev;
-    g = g->prev;
+    g->size += g->prev->size + METADATA_SIZE;
+    g->prev = g->prev->prev;
+    g->prev->next = g;
   }
   if (g->next && g->next->free) {
-    g->size += METADATA_SIZE + g->next->size;
+    g->size += g->next->size + METADATA_SIZE;
     g->next = g->next->next;
     if (g->next) {
       g->next->prev = g;
     }
-  } else {
-    if (g->prev) {
-      g->prev->next = NULL;
-    } else
-        g_first_chunk = NULL;
-    brk(0);
   }
 }
 
@@ -48,10 +42,10 @@ void        free(void *ptr)
 {
   t_chunk   *tmp;
 
-  if (addr_is_valid(ptr) && ptr) {
-    tmp = addr_is_valid((t_chunk *)ptr);
-    tmp -= 1;
+  tmp = addr_is_valid((t_chunk *)ptr);
+  if (tmp) {
     tmp->free = 1;
+    tmp = tmp-1;
     glue_given_block(tmp);
   }
 }
