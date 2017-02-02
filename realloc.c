@@ -14,22 +14,26 @@
 #include <stdio.h>
 
 /*
- * change that
+ * TODO: check if we can expend without moving the memory
  */
 void *realloc(void *ptr, size_t size)
 {
   t_chunk *chunk;
 
+  if (ptr == NULL)
+    return (malloc(size));
+  chunk = (t_chunk*)ptr - 1;
+  if (size == chunk->size)
+    return ptr;
+
   void *new = malloc(size);
   if(new == NULL)
     return NULL;
-  if (ptr == NULL)
-    return new;
-  chunk = (t_chunk*)ptr - 1;
-  if (size < chunk->size) {
-    return ptr;
-  }
-  memcpy(new, ptr, chunk->size);
+
+  if (size < chunk->size)
+    memcpy(new, ptr, size);
+  else
+    memcpy(new, ptr, chunk->size);
   free(ptr);
   return (new);
 }
