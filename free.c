@@ -25,9 +25,10 @@ static t_chunk *addr_is_valid(void *ptr) {
 
 static void glue_given_block(t_chunk *g) {
   if (g->prev && g->prev->free) {
-    g->size += g->prev->size + METADATA_SIZE;
-    g->prev = g->prev->prev;
-    g->prev->next = g;
+    g->prev->size += g->size + METADATA_SIZE;
+    g->prev->next = g->next;
+    g->next->prev = g->prev;
+    g = g->prev;
   }
   if (g->next && g->next->free) {
     g->size += g->next->size + METADATA_SIZE;
