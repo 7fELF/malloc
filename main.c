@@ -29,6 +29,5 @@ int main()
     }
     if (random() % 2)
       free(m);
-    show_alloc_mem();
   }
 }

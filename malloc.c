@@ -13,24 +13,28 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include <time.h>
+
 t_chunk *g_first_chunk = NULL;
 
 /*
 ** Set all the meta of the chunk
 ** next is always set to NULL
 */
-static void *set_chunk(void *ptr, size_t size, long free, t_chunk *prev)
+static void *set_chunk(void *ptr, t_chunk chunk_data)
 {
   t_chunk *chunk;
 
   chunk = (t_chunk*) ptr;
-  chunk->size = size;
-  chunk->free = free;
-  chunk->next = NULL;
-  chunk->prev = prev;
-  if (prev)
-    prev->next = chunk;
-  return ((char*) ptr) + sizeof(t_chunk) + size;
+  chunk->size = chunk_data.size;
+  chunk->free = chunk_data.free;
+  chunk->prev = chunk_data.prev;
+  chunk->next = chunk_data.next;
+  if (chunk->prev)
+    chunk->prev->next = chunk;
+  if (chunk->next)
+    chunk->next->prev = chunk;
+  return ((char*) ptr) + sizeof(t_chunk) + chunk->size;
 }
 
 static t_chunk *alloc_chunk(t_chunk *chunk, size_t size) {
@@ -45,12 +49,14 @@ static t_chunk *alloc_chunk(t_chunk *chunk, size_t size) {
   }
   next = chunk->next;
   leftover_size = chunk->size - size - (METADATA_SIZE * 2);
-  leftover = (t_chunk*) set_chunk(chunk, size, 0, chunk->prev);
+
+  chunk->size = size;
+  chunk->free = 0;
+  leftover = (t_chunk*) (((char*)(chunk + 1)) + size);
   chunk->next = leftover;
-  set_chunk(leftover, leftover_size, 1, chunk);
-  leftover->next = next;
-  if (leftover->next)
-    leftover->next->prev = leftover;
+
+  set_chunk(leftover, (t_chunk){ leftover_size, 1, chunk, next });
+
   return chunk;
 }
 
@@ -74,9 +80,11 @@ void        *malloc(size_t size)
   chunk = (t_chunk*) sbrk((intptr_t)size_to_add);
   if (chunk == (void*) -1)
     return NULL;
-  last_chunk = (t_chunk*) set_chunk(chunk, size, 0, last_chunk);
-  set_chunk(last_chunk, size_to_add - size - (METADATA_SIZE * 2), 1, chunk);
-  chunk->next = last_chunk;
+
+  last_chunk = (t_chunk*) set_chunk(chunk, ((t_chunk){ size, 0, last_chunk, NULL }));
+  set_chunk(last_chunk,
+      ((t_chunk) { size_to_add - size - (METADATA_SIZE * 2), 1, chunk, NULL}));
+
   if (g_first_chunk == NULL)
     g_first_chunk = chunk;
   return (chunk + 1);
