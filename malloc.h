@@ -36,7 +36,7 @@ void *realloc(void *ptr, size_t size);
 ** (size | (MIN_BLOCK_SIZE - 1)) + 1  = 0b111 + 1 = 0b1000 = 8
 */
 # define MIN_BLOCK_SIZE (1 << 20) // Must be a power of 2
-# define ROUND_HEAP_SIZE(size) (size | (MIN_BLOCK_SIZE - 1)) + 1
+# define ROUND_HEAP_SIZE(size) ((size) | (MIN_BLOCK_SIZE - 1)) + 1
 # define ROUND_CHUNK_SIZE(size) ((size | 7) + 1)
 
 typedef struct s_chunk t_chunk;
