@@ -19,7 +19,7 @@ void show_alloc_mem()
 
   chunk = g_first_chunk;
   while (chunk) {
-    printf("%p %6lu %2lu \n", chunk + 1, chunk->size, chunk->free);
+    printf("%p %6lu %2lu \n", (void*)(chunk + 1), chunk->size, chunk->free);
     chunk = chunk->next;
   }
   printf("----------------\n");
