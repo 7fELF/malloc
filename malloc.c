@@ -17,10 +17,6 @@
 
 t_chunk *g_first_chunk = NULL;
 
-/*
-** Set all the meta of the chunk
-** next is always set to NULL
-*/
 static void        *set_chunk(void *ptr, t_chunk chunk_data)
 {
   t_chunk          *chunk;
