@@ -9,6 +9,7 @@
 */
 
 #include "malloc.h"
+#include <stdio.h>
 
 static int addr_is_valid(t_chunk *chunk) {
   return (g_first_chunk && chunk
@@ -36,8 +37,6 @@ static void merge_free_blocks(t_chunk *g) {
   /* } */
 }
 
-
-#include <stdio.h>
 void        free(void *ptr)
 {
   t_chunk   *tmp;

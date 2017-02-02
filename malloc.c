@@ -1,19 +1,16 @@
 /*
-** malloc.c for PSU_2016_malloc in /tekpi/PSU_2016_malloc
+** malloc.c for PSU_2016_malloc in /home/antoine/PSU_2016_malloc
 **
-** Made by Valentin Pichard
-** Login   <valentin.pichard@epitech.eu>
+** Made by Antoine Baudrand
+** Login   <antoine.baudrand@epitech.eu>
 **
-** Started on  Fri Jan 27 15:07:09 2017 Solomon Hykes
-** Last update Fri Jan 27 15:07:09 2017 Solomon Hykes
+** Started on  jeu. févr. 02 20:09:26 2017 Antoine Baudrand
+** Last update jeu. févr. 02 20:09:26 2017 Antoine Baudrand
 */
 
 #include "malloc.h"
 #include <string.h>
-#include <stdio.h>
 #include <stdint.h>
-
-#include <time.h>
 
 t_chunk *g_first_chunk = NULL;
 
@@ -61,18 +58,19 @@ static t_chunk *alloc_new_chunk(size_t size, t_chunk *last_chunk) {
   t_chunk          *chunk;
 
   size_to_add = ROUND_HEAP_SIZE(size + METADATA_SIZE * 2 + 8);
+
   chunk = (t_chunk*) sbrk((intptr_t)size_to_add);
   if (chunk == (void*) -1)
     return (NULL);
 
-  last_chunk = (t_chunk*) set_chunk(chunk, ((t_chunk){ size, 0, last_chunk, NULL }));
+  last_chunk = (t_chunk*) set_chunk(chunk,
+      (t_chunk) { size, 0, last_chunk, NULL });
   set_chunk(last_chunk,
-      ((t_chunk) { size_to_add - size - (METADATA_SIZE * 2), 1, chunk, NULL}));
+      (t_chunk) { (size_to_add - size - (METADATA_SIZE * 2)), 1, chunk, NULL });
 
   if (g_first_chunk == NULL)
     g_first_chunk = chunk;
   return (chunk);
-
 }
 
 void               *malloc(size_t size)
