@@ -12,22 +12,21 @@
 #include <string.h>
 
 /*
- * TODO: check if we can expend without moving the memory
- */
-void *realloc(void *ptr, size_t size)
+** TODO: check if we can expend without moving the memory
+*/
+void         *realloc(void *ptr, size_t size)
 {
-  t_chunk *chunk;
+  t_chunk    *chunk;
+  void       *new;
 
   if (ptr == NULL)
     return (malloc(size));
   chunk = (t_chunk*)ptr - 1;
   if (size == chunk->size)
-    return ptr;
-
-  void *new = malloc(size);
-  if(new == NULL)
-    return NULL;
-
+    return (ptr);
+  malloc(size);
+  if (new == NULL)
+    return (NULL);
   if (size < chunk->size)
     memcpy(new, ptr, size);
   else

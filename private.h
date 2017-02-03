@@ -11,9 +11,9 @@
 #ifndef PRIVATE_H_
 # define PRIVATE_H_
 
-#include "public.h"
-#include <unistd.h>
-#include <stddef.h>
+# include "public.h"
+# include <unistd.h>
+# include <stddef.h>
 
 /*
 ** Round up n to a multiple of m
@@ -29,7 +29,6 @@
 
 # define ROUND_TO_PAGESIZE(size) ROUND_UP_TO(size, PAGESIZE)
 # define ROUND_TO_WORD(size) ROUND_UP_TO(size, WORD)
-
 
 /*
 ** Struct representing each allocated chunk

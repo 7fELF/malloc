@@ -9,6 +9,7 @@
 */
 
 #include "private.h"
+#include <stdint.h>
 
 t_chunk *g_chunks = NULL;
 
@@ -25,10 +26,11 @@ static void        *set_chunk(void *ptr, t_chunk chunk_data)
     chunk->prev->next = chunk;
   if (chunk->next)
     chunk->next->prev = chunk;
-  return ((char*) (chunk + 1)) + chunk->size;
+  return (((char*) (chunk + 1)) + chunk->size);
 }
 
-static t_chunk     *alloc_chunk(t_chunk *chunk, size_t size) {
+static t_chunk     *alloc_chunk(t_chunk *chunk, size_t size)
+{
   t_chunk          *next;
   t_chunk          *leftover;
   size_t           leftover_size;
@@ -40,32 +42,27 @@ static t_chunk     *alloc_chunk(t_chunk *chunk, size_t size) {
   }
   next = chunk->next;
   leftover_size = chunk->size - size - (T_CHUNK_SIZE * 2);
-
   chunk->size = size;
   chunk->free = 0;
   leftover = (t_chunk *)(((char*)(chunk + 1)) + size);
   chunk->next = leftover;
-
   set_chunk(leftover, (t_chunk){ leftover_size, 1, chunk, next });
-
   return (chunk);
 }
 
-static t_chunk *alloc_new_chunk(size_t size, t_chunk *last_chunk) {
+static t_chunk     *alloc_new_chunk(size_t size, t_chunk *last_chunk)
+{
   size_t           size_to_add;
   t_chunk          *chunk;
 
   size_to_add = ROUND_TO_PAGESIZE(size + T_CHUNK_SIZE * 2 + 8);
-
   chunk = (t_chunk*) sbrk((intptr_t)size_to_add);
   if (chunk == (void*) -1)
     return (NULL);
-
   last_chunk = (t_chunk*) set_chunk(chunk,
       (t_chunk) { size, 0, last_chunk, NULL });
   set_chunk(last_chunk,
       (t_chunk) { (size_to_add - size - (T_CHUNK_SIZE * 2)), 1, chunk, NULL });
-
   if (g_chunks == NULL)
     g_chunks = chunk;
   return (chunk);
@@ -87,6 +84,5 @@ void               *malloc(size_t size)
     NEXT(chunk);
   }
   return (CHUNK_DATA(alloc_new_chunk(size, last_chunk)));
-
 }
 
