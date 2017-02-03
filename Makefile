@@ -14,7 +14,7 @@ RM = rm -rf
 
 TARGET_LIB = libmy_malloc.so
 
-CFLAGS	= -Wall -Wextra -Werror -fPIC -O3
+CFLAGS	= -Wall -Wextra -fPIC -g
 LDFLAGS = -shared
 
 
@@ -25,6 +25,7 @@ SRC	= free.c \
 			malloc.c \
 			realloc.c \
 			show_alloc.c \
+			calloc.c
 
 
 OBJS = $(SRC:.c=.o)

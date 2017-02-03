@@ -39,23 +39,12 @@ static void merge_free_blocks(t_chunk *g) {
 
 void        free(void *ptr)
 {
-  t_chunk   *tmp;
+  t_chunk   *chunk;
 
-  tmp = (t_chunk *) ptr;
-  if (addr_is_valid(tmp)) {
-    t_chunk *chunk = g_first_chunk;
-    t_chunk *to_find = tmp - 1;
-    while (chunk)
-    {
-      if (chunk == to_find)
-      {
-        tmp = tmp - 1;
-        tmp->free = 1;
-        merge_free_blocks(tmp);
-        return;
-      }
-      chunk = chunk->next;
-    }
-    /* fprintf(stderr, "bad free: %p\n", ptr); */
+  chunk = (t_chunk *) ptr;
+  if (addr_is_valid(chunk)) {
+    chunk = chunk - 1;
+    chunk->free = 1;
+    merge_free_blocks(chunk);
   }
 }

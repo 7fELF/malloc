@@ -24,6 +24,7 @@ void show_alloc_mem(void);
 void free(void *ptr);
 void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);
+void *calloc(size_t nmemb, size_t size);
 
 /*
 ** Round up size to a multiple of MIN_BLOCK_SIZE using a bitwise OR
