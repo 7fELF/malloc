@@ -8,23 +8,22 @@
 ** Last update Fri Jan 27 15:07:09 2017 Solomon Hykes
 */
 
-#include "malloc.h"
-#include <stdio.h>
+#include "private.h"
 
 static int addr_is_valid(t_chunk *chunk) {
-  return (g_first_chunk && chunk
-      && chunk > g_first_chunk && (void*) chunk < sbrk(0));
+  return (g_chunks && chunk
+      && chunk > g_chunks && (void*) chunk < sbrk(0));
 }
 
 static void merge_free_blocks(t_chunk *g) {
   if (g->prev && g->prev->free) {
-    g->prev->size += g->size + METADATA_SIZE;
+    g->prev->size += g->size + T_CHUNK_SIZE;
     g->prev->next = g->next;
     g->next->prev = g->prev;
     g = g->prev;
   }
   if (g->next && g->next->free) {
-    g->size += g->next->size + METADATA_SIZE;
+    g->size += g->next->size + T_CHUNK_SIZE;
     g->next = g->next->next;
     if (g->next) {
       g->next->prev = g;

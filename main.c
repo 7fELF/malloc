@@ -8,7 +8,7 @@
 ** Last update mar. janv. 31 11:20:18 2017 Antoine Baudrand
 */
 
-#include "malloc.h"
+#include "public.h"
 
 int main()
 {

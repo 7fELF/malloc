@@ -8,10 +8,8 @@
 ** Last update Fri Jan 27 15:07:09 2017 Solomon Hykes
 */
 
-#include "malloc.h"
+#include "private.h"
 #include <string.h>
-
-#include <stdio.h>
 
 /*
  * TODO: check if we can expend without moving the memory

@@ -7,7 +7,7 @@
 ** Started on  ven. févr. 03 14:16:28 2017 Antoine Baudrand
 ** Last update ven. févr. 03 14:16:28 2017 Antoine Baudrand
 */
-#include "malloc.h"
+#include "private.h"
 #include <string.h>
 
 void *calloc(size_t count, size_t size)
