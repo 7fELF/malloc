@@ -20,7 +20,8 @@ void show_alloc_mem()
   chunk = g_first_chunk;
   while (chunk) {
     printf("0x%" PRIXPTR " - 0x%" PRIXPTR " : %lu bytes \n",
-        (uintptr_t) chunk, (uintptr_t) (chunk + chunk->size), chunk->size);
+        (uintptr_t) (chunk + 1),
+        (uintptr_t) (((char*)chunk) + METADATA_SIZE + chunk->size), chunk->size);
     chunk = chunk->next;
   }
 }
