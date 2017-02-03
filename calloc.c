@@ -10,11 +10,12 @@
 #include "malloc.h"
 #include <string.h>
 
-void *calloc (size_t count, size_t eltsize)
+void *calloc(size_t count, size_t size)
 {
-  size_t size = count * eltsize;
-  void *value = malloc(size);
-  if (value != 0)
-    memset(value, 0, size);
-  return value;
+  void *ptr;
+
+  ptr = malloc(count * size);
+  if (ptr)
+    memset(ptr, 0, count * size);
+  return ptr;
 }
