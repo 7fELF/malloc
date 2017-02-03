@@ -24,7 +24,7 @@
 /*
 ** Must be a power of 2
 */
-# define PAGESIZE (1 << 20)
+# define PAGESIZE (1 << 21)
 # define WORD sizeof(void*)
 
 # define ROUND_TO_PAGESIZE(size) ROUND_UP_TO(size, PAGESIZE)
