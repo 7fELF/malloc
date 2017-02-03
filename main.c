@@ -12,22 +12,6 @@
 
 int main()
 {
-  size_t sz;
-  t_chunk *c;
-  char *m;
-
-  while (1) {
-    sz = random() % (1 << 21);
-    m = (char*) malloc(sz);
-    c = ((t_chunk*)m) - 1;
-    if (c->size < sz) break;
-    sz = ROUND_CHUNK_SIZE(sz);
-    for (size_t i; i < sz; i++)
-    {
-      m[i] = 42;
-      if (m[i] != 42) break;
-    }
-    if (random() % 2)
-      free(m);
-  }
+  malloc(42);
+  show_alloc_mem();
 }
