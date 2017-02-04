@@ -21,10 +21,10 @@ void         *realloc(void *ptr, size_t size)
 
   if (ptr == NULL)
     return (malloc(size));
-  chunk = (t_chunk*)ptr - 1;
+  chunk = GET_CHUNK_FROM_DATA_PTR(ptr);
   if (size == chunk->size)
     return (ptr);
-  malloc(size);
+  new = malloc(size);
   if (new == NULL)
     return (NULL);
   if (size < chunk->size)
