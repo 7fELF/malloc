@@ -26,7 +26,7 @@ static void        *set_chunk(void *ptr, t_chunk chunk_data)
     chunk->prev->next = chunk;
   if (chunk->next)
     chunk->next->prev = chunk;
-  return CHUNK_END_PTR(chunk);
+  return (CHUNK_END_PTR(chunk));
 }
 
 static t_chunk     *alloc_chunk(t_chunk *chunk, size_t size)
