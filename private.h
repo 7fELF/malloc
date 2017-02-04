@@ -48,9 +48,9 @@ struct     s_chunk {
 */
 # define NEXT(list) list = list->next
 # define PREV(list) list = list->prev
-# define CHUNK_END_PTR(chunk) (((char*)(chunk)) + T_CHUNK_SIZE + size)
+# define CHUNK_END_PTR(chunk) (((char*)(chunk)) + T_CHUNK_SIZE + chunk->size)
 # define CHUNK_DATA(chunk) ((void*)(chunk + 1))
-# define GET_CHUNK_FROM_DATA_PTR(ptr) (((t_chunk)ptr) - 1)
+# define GET_CHUNK_FROM_DATA_PTR(ptr) (((t_chunk*)ptr) - 1)
 
 /*
 ** Global variable containing the first element of the chunks list.

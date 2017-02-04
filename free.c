@@ -12,8 +12,9 @@
 
 static int addr_is_valid(t_chunk *chunk)
 {
-  return (g_chunks && chunk
-      && chunk > g_chunks && (void*) chunk < sbrk(0));
+  return (g_chunks
+      && chunk && chunk > g_chunks
+      && (void*) chunk < sbrk(0));
 }
 
 static void merge_free_blocks(t_chunk *g)
@@ -24,7 +25,7 @@ static void merge_free_blocks(t_chunk *g)
     g->prev->next = g->next;
     if (g->next)
       g->next->prev = g->prev;
-    g = g->prev;
+    PREV(g);
   }
   if (g->next && g->next->free)
   {
@@ -47,10 +48,9 @@ void        free(void *ptr)
 {
   t_chunk   *chunk;
 
-  chunk = (t_chunk *) ptr;
+  chunk = GET_CHUNK_FROM_DATA_PTR(ptr);
   if (addr_is_valid(chunk))
   {
-    chunk = chunk - 1;
     chunk->free = 1;
     merge_free_blocks(chunk);
   }
