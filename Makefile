@@ -14,7 +14,7 @@ RM = rm -rf
 
 TARGET_LIB = libmy_malloc.so
 
-CFLAGS	= -Wall -Wextra -fPIC -g
+CFLAGS	= -Wall -Wextra -fPIC
 LDFLAGS = -shared
 
 
