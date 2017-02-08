@@ -1,14 +1,15 @@
 /*
-** calloc.c for PSU_2016_malloc in /home/antoine/PSU_2016_malloc
+** calloc.c for PSU_2016_malloc in /Users/pichar_v/Documents/tek2/PSU_2016
 **
-** Made by Antoine Baudrand
-** Login   <antoine.baudrand@epitech.eu>
+** Made by Valentin Pichard
+** Login   <valentin.pichard@epitech.eu>
 **
-** Started on  ven. févr. 03 14:16:28 2017 Antoine Baudrand
-** Last update ven. févr. 03 14:16:28 2017 Antoine Baudrand
+** Started on  Fri Jan 27 15:07:09 2017 Solomon Hykes
+** Last update Fri Jan 27 15:07:09 2017 Solomon Hykes
 */
-#include "private.h"
+
 #include <string.h>
+#include "private.h"
 
 void *calloc(size_t count, size_t size)
 {
@@ -17,5 +18,5 @@ void *calloc(size_t count, size_t size)
   ptr = malloc(count * size);
   if (ptr)
     memset(ptr, 0, count * size);
-  return ptr;
+  return (ptr);
 }

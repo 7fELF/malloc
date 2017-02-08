@@ -4,8 +4,8 @@
 ## Made by Valentin Pichard
 ## Login   <valentin.pichard@epitech.eu>
 ##
-## Started on  Fri Jan 27 15:07:09 2017 Linus Torvalds
-## Last update Fri Jan 27 15:07:09 2017 Linus Torvalds
+## Started on  Fri Jan 27 15:07:09 2017 Valentin Pichard
+## Last update Fri Jan 27 15:07:09 2017 Valentin Pichard
 ##
 
 CC = gcc
@@ -17,15 +17,11 @@ TARGET_LIB = libmy_malloc.so
 CFLAGS	= -Wall -Wextra -fPIC
 LDFLAGS = -shared
 
-
-# CC = clang
-# CFLAGS = -Weverything -fPIC -g
-
 SRC	= free.c \
-			malloc.c \
-			realloc.c \
-			show_alloc.c \
-			calloc.c
+		malloc.c \
+		realloc.c \
+		show_alloc.c \
+		calloc.c
 
 
 OBJS = $(SRC:.c=.o)

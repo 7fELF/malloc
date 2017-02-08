@@ -8,13 +8,13 @@
 ** Last update Fri Jan 27 15:07:09 2017 Solomon Hykes
 */
 
-#include "private.h"
 #include <stdio.h>
 #include <inttypes.h>
+#include "private.h"
 
-void show_alloc_mem()
+void       show_alloc_mem()
 {
-  t_chunk *chunk;
+  t_chunk  *chunk;
 
   printf("break : 0x%" PRIXPTR "\n", (uintptr_t) sbrk(0));
   chunk = g_chunks;

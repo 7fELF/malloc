@@ -1,15 +1,15 @@
 /*
-** malloc.c for PSU_2016_malloc in /home/antoine/PSU_2016_malloc
+** malloc.c for in /Users/pichar_v/Documents/tek2/PSU_2016_malloc
 **
-** Made by Antoine Baudrand
-** Login   <antoine.baudrand@epitech.eu>
+** Made by Valentin Pichard
+** Login   <valentin.pichard@epitech.eu>
 **
-** Started on  jeu. févr. 02 20:09:26 2017 Antoine Baudrand
-** Last update jeu. févr. 02 20:09:26 2017 Antoine Baudrand
+** Started on  Fri Jan 27 15:07:09 2017 Solomon Hykes
+** Last update Fri Jan 27 15:07:09 2017 Solomon Hykes
 */
 
-#include "private.h"
 #include <stdint.h>
+#include "private.h"
 
 t_chunk *g_chunks = NULL;
 
@@ -85,4 +85,3 @@ void               *malloc(size_t size)
   }
   return (CHUNK_DATA(alloc_new_chunk(size, last_chunk)));
 }
-
