@@ -73,6 +73,10 @@ void               *malloc(size_t size)
   t_chunk          *chunk;
   t_chunk          *last_chunk;
 
+  if (size == 0 || (intptr_t) size < 0)
+  {
+    return (NULL);
+  }
   size = ROUND_TO_WORD(size);
   chunk = g_chunks;
   last_chunk = NULL;
