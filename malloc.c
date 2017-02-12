@@ -65,7 +65,7 @@ static t_chunk     *alloc_new_chunk(size_t size, t_chunk *last_chunk)
       (t_chunk) { (size_to_add - size - (T_CHUNK_SIZE * 2)), 1, chunk, NULL });
   if (g_chunks == NULL)
     g_chunks = chunk;
-  return (chunk);
+  return ((t_chunk*) CHUNK_DATA(chunk));
 }
 
 void               *malloc(size_t size)
@@ -87,5 +87,5 @@ void               *malloc(size_t size)
     last_chunk = chunk;
     NEXT(chunk);
   }
-  return (CHUNK_DATA(alloc_new_chunk(size, last_chunk)));
+  return (alloc_new_chunk(size, last_chunk));
 }
