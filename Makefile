@@ -1,13 +1,3 @@
-##
-## Makefile for PSU_2016_malloc in /Users/pichar_v/Documents/tek2/PSU_2016_mal
-##
-## Made by Valentin Pichard
-## Login   <valentin.pichard@epitech.eu>
-##
-## Started on  Fri Jan 27 15:07:09 2017 Valentin Pichard
-## Last update Fri Jan 27 15:07:09 2017 Valentin Pichard
-##
-
 CC = gcc
 
 RM = rm -rf

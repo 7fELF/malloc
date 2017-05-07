@@ -1,13 +1,3 @@
-/*
-** malloc.c for in /Users/pichar_v/Documents/tek2/PSU_2016_malloc
-**
-** Made by Valentin Pichard
-** Login   <valentin.pichard@epitech.eu>
-**
-** Started on  Fri Jan 27 15:07:09 2017 Solomon Hykes
-** Last update Fri Jan 27 15:07:09 2017 Solomon Hykes
-*/
-
 #include <stdint.h>
 #include "private.h"
 
